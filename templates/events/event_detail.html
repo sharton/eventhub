@@ -5,16 +5,28 @@
 {% block content %}
 <section class="page-shell">
     <div class="container">
-        <article class="detail-card">
-            {% if event.poster %}
-                <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="detail-poster">
-            {% endif %}
-            <span class="chip amber lighten-4">{{ event.category.name }}</span>
+        <div class="page-header">
+            <a href="{% url 'event_list' %}" class="feature-link">← Назад к каталогу</a>
+            <span class="eyebrow">Детали события</span>
             <h1>{{ event.title }}</h1>
             <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
-            <p>{{ event.description }}</p>
-            <div class="detail-actions">
-                <a href="{% url 'events:event_list' %}" class="feature-link">← Назад к событиям</a>
+        </div>
+
+        <article class="event-card" style="max-width: 800px; margin: 0 auto;">
+            {% if event.poster %}
+                <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="event-poster" style="max-height: 450px; object-fit: cover; width: 100%; border-radius: 8px;">
+            {% endif %}
+
+            <div style="margin-top: 24px;">
+                <h3>Краткое описание</h3>
+                <p class="lead"><strong>{{ event.summary }}</strong></p>
+            </div>
+
+            <hr style="margin: 24px 0; border: 0; border-top: 1px solid #e0e0e0;">
+
+            <div>
+                <h3>Подробная информация</h3>
+                <p>{{ event.description|linebreaks }}</p>
             </div>
         </article>
     </div>
