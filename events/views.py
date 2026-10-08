@@ -1,4 +1,5 @@
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.shortcuts import render, get_object_or_404
 from .models import Event
 from .forms import EventForm
 
@@ -24,3 +25,8 @@ class EventCreateView(CreateView):
     form_class = EventForm
     template_name = "events/event_form.html"
     success_url = "/events/"
+
+def event_detail(request, slug):
+    """Детальная страница выбранного события."""
+    event = get_object_or_404(Event, slug=slug, is_published=True)
+    return render(request, 'events/event_detail.html', {'event': event})
