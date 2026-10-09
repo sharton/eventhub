@@ -13,7 +13,18 @@
                     EventHub помогает университетским командам вести календарь мероприятий, публиковать анонсы
                     и постепенно вырастает в полноценную систему управления событиями.
                 </p>
-               
+
+                <!-- КНОПКА СОЗДАНИЯ КВЕСТА/ИВЕНТА -->
+                <div style="margin-top: 24px;">
+                    <a href="{% url 'events:event_create' %}" class="btn-large amber darken-2 waves-effect waves-light">
+                        + Создать квест
+                    </a>
+                    <a href="{% url 'events:event_list' %}" class="btn-large btn-flat waves-effect"
+                        style="margin-left: 12px;">
+                        Все квесты
+                    </a>
+                </div>
+
             </div>
             <div class="col s12 l5">
                 <div class="hero-panel z-depth-0">
@@ -26,9 +37,6 @@
                     </ul>
                 </div>
             </div>
-        </div>
-        <div class="row">
-          
         </div>
     </div>
 </section>
