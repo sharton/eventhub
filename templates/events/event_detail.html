@@ -7,13 +7,16 @@
     <div class="container">
         <article class="detail-card">
             {% if event.poster %}
-                <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="detail-poster">
+            <!-- Картинка загружается автоматически, если она прикреплена -->
+            <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="detail-poster">
             {% endif %}
-            <span class="chip amber lighten-4">{{ event.category.name }}</span>
+
             <h1>{{ event.title }}</h1>
             <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
+            <p><strong>{{ event.summary }}</strong></p>
             <p>{{ event.description }}</p>
-            <div class="detail-actions">
+
+            <div class="detail-actions" style="margin-top: 20px;">
                 <a href="{% url 'events:event_list' %}" class="feature-link">← Назад к событиям</a>
             </div>
         </article>
