@@ -10,28 +10,37 @@
             <h1>Список событий</h1>
             <p>Пока это демонстрационный список, а на следующих занятиях мы свяжем его с моделями и базой данных.</p>
         </div>
-   
-    
+
+        <div class="page-header" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <span class="eyebrow">Event Catalog</span>
+                <h1>Список событий</h1>
+            </div>
+            <a href="{% url 'events:event_create' %}" class="btn-large amber darken-2 waves-effect waves-light">
+                + Создать квест
+            </a>
+        </div>
+
         <div class="row">
             {% for event in events %}
-                <div class="col s12 m6 l4">
-                    <article class="event-card">
-                        {% if event.poster %}
-                            <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="event-poster">
-                        {% endif %}
-                        <h2>{{ event.title }}</h2>
-                        <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
-                        <p>{{ event.summary }}</p>
-                        <a href="{{ event.get_absolute_url }}" class="feature-link">Открыть карточку</a>
-                    </article>
-                </div>
+            <div class="col s12 m6 l4">
+                <article class="event-card">
+                    {% if event.poster %}
+                    <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="event-poster">
+                    {% endif %}
+                    <h2>{{ event.title }}</h2>
+                    <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
+                    <p>{{ event.summary }}</p>
+                    <a href="{{ event.get_absolute_url }}" class="feature-link">Открыть карточку</a>
+                </article>
+            </div>
             {% empty %}
-                <div class="col s12">
-                    <article class="event-card">
-                        <h2>Каталог пока пуст</h2>
-                        <p>После добавления первых записей события появятся здесь автоматически.</p>
-                    </article>
-                </div>
+            <div class="col s12">
+                <article class="event-card">
+                    <h2>Каталог пока пуст</h2>
+                    <p>После добавления первых записей события появятся здесь автоматически.</p>
+                </article>
+            </div>
             {% endfor %}
         </div>
     </div>

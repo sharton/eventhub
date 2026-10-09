@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 class Event(models.Model):
     title = models.CharField(max_length=200)
@@ -14,3 +15,7 @@ class Event(models.Model):
 
     def __str__(self):
         return self.title
+
+    # <--- Добавили метод ссылки на детальную страницу
+    def get_absolute_url(self):
+        return reverse('events:event_detail', kwargs={'pk': self.pk})
