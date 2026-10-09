@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}EventHub | Create event{% endblock %}
+
+{% block content %}
+<section class="page-shell">
+    <div class="container">
+        <div class="page-header">
+            <span class="eyebrow">Создание события</span>
+            <h1>Создать событие</h1>
+        </div>
+        <form method="post" enctype="multipart/form-data" class="event-card">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn">Создать событие</button>
+        </form>
+    </div>
+</section>
+{% endblock %}
