@@ -7,7 +7,6 @@
     <div class="container">
         <article class="detail-card">
             {% if event.poster %}
-            <!-- Картинка загружается автоматически, если она прикреплена -->
             <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="detail-poster">
             {% endif %}
 
@@ -16,8 +15,14 @@
             <p><strong>{{ event.summary }}</strong></p>
             <p>{{ event.description }}</p>
 
-            <div class="detail-actions" style="margin-top: 20px;">
+            <div class="detail-actions" style="margin-top: 24px; display: flex; gap: 12px; align-items: center;">
                 <a href="{% url 'events:event_list' %}" class="feature-link">← Назад к событиям</a>
+
+                <!-- КНОПКА ОБНОВЛЕНИЯ ДАННЫХ -->
+                <a href="{% url 'events:event_update' event.pk %}"
+                    class="btn-large amber darken-2 waves-effect waves-light">
+                    Редактировать квест
+                </a>
             </div>
         </article>
     </div>
