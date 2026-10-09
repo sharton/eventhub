@@ -22,7 +22,7 @@
                         <h2>{{ event.title }}</h2>
                         <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
                         <p>{{ event.summary }}</p>
-                        <a href="{{ event.get_absolute_url }}" class="feature-link">Открыть карточку</a>
+                        <a href="{% url 'events:event_detail' event.pk %}" class="feature-link">Открыть карточку</a>
                     </article>
                 </div>
             {% empty %}
