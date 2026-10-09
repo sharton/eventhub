@@ -11,3 +11,5 @@ urlpatterns = [
     path('events/update/<int:pk>', views.EventUpdateView.as_view(), name="event_update"),
 
 ]
+
+# Comment
