@@ -1,0 +1,216 @@
+:root {
+    --bg: #f6f1e8;
+    --paper: #fffaf2;
+    --ink: #1f1b16;
+    --muted: #6d6256;
+    --line: rgba(31, 27, 22, 0.08);
+    --accent: #d18622;
+    --accent-deep: #9c4d0e;
+}
+
+body {
+    background:
+        radial-gradient(circle at top right, rgba(209, 134, 34, 0.18), transparent 30%),
+        linear-gradient(180deg, #f4eee2 0%, #f9f5ee 52%, #fffdf9 100%);
+    color: var(--ink);
+    font-family: "Manrope", sans-serif;
+}
+
+.nav-shell {
+    background: rgba(255, 250, 242, 0.86);
+    box-shadow: none;
+}
+
+.nav-shell .nav-wrapper {
+    border-bottom: 1px solid var(--line);
+}
+
+.brand-mark {
+    color: var(--accent-deep) !important;
+    font-weight: 800;
+    letter-spacing: -0.04em;
+}
+
+.nav-shell a {
+    color: var(--ink) !important;
+}
+
+.nav-form {
+    margin: 0;
+}
+
+.nav-button {
+    background: none;
+    border: 0;
+    color: var(--ink);
+    cursor: pointer;
+    height: 64px;
+    padding: 0 15px;
+}
+
+.hero-shell,
+.page-shell {
+    padding: 3.5rem 0 4rem;
+}
+
+.hero-grid {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.eyebrow,
+.panel-label,
+.event-date,
+.feature-date {
+    color: var(--accent-deep);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+
+.hero-title,
+.page-header h1 {
+    font-size: clamp(2.4rem, 5vw, 4.8rem);
+    font-weight: 800;
+    letter-spacing: -0.06em;
+    line-height: 0.98;
+    margin: 0.6rem 0 1rem;
+}
+
+.hero-copy,
+.page-header p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.8;
+    max-width: 46rem;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.ghost-button {
+    border: 1px solid var(--line);
+    color: var(--ink) !important;
+}
+
+.hero-panel,
+.feature-card,
+.event-card,
+.detail-card {
+    background: rgba(255, 250, 242, 0.88);
+    border: 1px solid var(--line);
+    border-radius: 28px;
+    padding: 1.75rem;
+}
+
+.hero-panel ul {
+    margin: 1rem 0 0;
+}
+
+.feature-card,
+.event-card {
+    min-height: 220px;
+    margin-bottom: 1rem;
+}
+
+.detail-card {
+    max-width: 52rem;
+}
+
+.event-poster,
+.detail-poster {
+    border-radius: 20px;
+    display: block;
+    margin-bottom: 1rem;
+    width: 100%;
+}
+
+.event-poster {
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+}
+
+.feature-card h2,
+.event-card h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 0.6rem 0;
+}
+
+.page-header {
+    margin-bottom: 2rem;
+}
+
+.filter-grid,
+.form-shell {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.filter-grid {
+    align-items: end;
+    margin-bottom: 2rem;
+}
+
+.filter-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-row {
+    display: grid;
+    gap: 0.4rem;
+}
+
+.form-row input,
+.form-row select,
+.form-row textarea {
+    background: rgba(255, 255, 255, 0.72);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 0.9rem 1rem;
+}
+
+.form-row textarea {
+    min-height: 8rem;
+}
+
+.form-error {
+    color: #b3261e;
+    margin: 0;
+}
+
+.chip {
+    font-weight: 700;
+}
+
+.feature-link {
+    color: var(--accent-deep);
+    font-weight: 700;
+}
+
+.detail-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 1.5rem;
+}
+
+.auth-shell {
+    max-width: 32rem;
+}
+
+@media only screen and (max-width: 992px) {
+    .brand-logo {
+        position: static;
+        transform: none;
+    }
+}
