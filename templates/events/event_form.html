@@ -1,11 +1,15 @@
 {% extends "base.html" %}
 
+ my-solution
 {% block title %}EventHub | Create event{% endblock %}
+{% block title %}EventHub | {{ page_title }}{% endblock %}
+ main
 
 {% block content %}
 <section class="page-shell">
     <div class="container">
         <div class="page-header">
+ my-solution
             <span class="eyebrow">Создание события</span>
             <h1>Создать событие</h1>
         </div>
@@ -13,6 +17,29 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" class="btn">Создать событие</button>
+
+            <span class="eyebrow">Forms & Validation</span>
+            <h1>{{ page_title }}</h1>
+        </div>
+        <form method="post" enctype="multipart/form-data" class="detail-card form-shell">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-row">
+                    <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <small>{{ field.help_text }}</small>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="form-error">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                <p class="form-error">{{ error }}</p>
+            {% endfor %}
+            <button type="submit" class="btn-large amber darken-2">Сохранить событие</button>
+ main
         </form>
     </div>
 </section>

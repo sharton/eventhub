@@ -1,6 +1,11 @@
+ my-solution
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DetailView, ListView, TemplateView
+
+from django.views.generic import TemplateView, ListView, DetailView, CreateView
+ main
 from .models import Event
+from .forms import EventForm
 
 
 class HomeView(TemplateView):
@@ -13,6 +18,7 @@ class EventListView(ListView):
     context_object_name = "events"
 
 
+ my-solution
 class EventCreateView(CreateView):
     model = Event
     template_name = "events/event_form.html"
@@ -24,3 +30,16 @@ class EventDetailView(DetailView):
     model = Event
     template_name = "events/event_detail.html"
     context_object_name = "event"
+
+class EventDetailView(DetailView):
+    model = Event
+    template_name = "events/event_detail.html"
+    context_object_name = "event"
+
+
+class EventCreateView(CreateView):
+    model = Event
+    form_class = EventForm
+    template_name = "events/event_form.html"
+    success_url = "/events/"
+ main

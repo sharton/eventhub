@@ -5,6 +5,7 @@
 {% block content %}
 <section class="page-shell">
     <div class="container">
+ my-solution
         <div class="page-header">
             <span class="eyebrow">Event Details</span>
             <h1>{{ event.title }}</h1>
@@ -17,6 +18,19 @@
             <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
             <p>{{ event.description|linebreaks }}</p>
             <a href="{% url 'events:event_list' %}" class="feature-link">Все события</a>
+
+        <article class="detail-card">
+            {% if event.poster %}
+                <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="detail-poster">
+            {% endif %}
+            <span class="chip amber lighten-4">{{ event.category.name }}</span>
+            <h1>{{ event.title }}</h1>
+            <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
+            <p>{{ event.description }}</p>
+            <div class="detail-actions">
+                <a href="{% url 'events:event_list' %}" class="feature-link">← Назад к событиям</a>
+            </div>
+ main
         </article>
     </div>
 </section>
