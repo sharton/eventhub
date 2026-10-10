@@ -1,27 +1,207 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}EventHub{% endblock %}</title>
+
+    <!-- Подключение шрифта Inter и Material Design Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,500,0,0" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <!-- Materialize CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="{% static 'css/app.css' %}">
+
+    <style>
+        :root {
+            --primary-color: #f59e0b;
+            --primary-hover: #d97706;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --radius: 12px;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            flex-direction: column;
+            margin: 0;
+        }
+
+        main {
+            flex: 1 0 auto;
+            padding-bottom: 40px;
+        }
+
+        /* Навбар / Шапка */
+        nav {
+            background-color: #0f172a !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            height: 64px;
+            line-height: 64px;
+        }
+
+        nav .brand-logo {
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 1.4rem;
+        }
+
+        nav ul a {
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        /* Карточки событий */
+        .event-card,
+        .detail-card,
+        .form-shell {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .event-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+            border-color: #cbd5e1;
+        }
+
+        /* Картинки-постеры */
+        .event-poster,
+        .detail-poster {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .detail-poster {
+            height: 320px;
+        }
+
+        /* Кнопки */
+        .btn-large,
+        .btn {
+            border-radius: 8px !important;
+            font-weight: 600 !important;
+            text-transform: none !important;
+            box-shadow: none !important;
+            transition: all 0.2s ease !important;
+        }
+
+        .btn-large:hover,
+        .btn:hover {
+            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.3) !important;
+            transform: translateY(-1px);
+        }
+
+        /* Заголовки */
+        h1,
+        h2,
+        h3 {
+            font-weight: 700;
+            color: #0f172a;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 2.25rem;
+            margin-top: 0;
+        }
+
+        h2 {
+            font-size: 1.75rem;
+        }
+
+        h3 {
+            font-size: 1.25rem;
+        }
+
+        .eyebrow {
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            color: var(--primary-color);
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        /* Мета-данные */
+        .event-date {
+            color: var(--text-muted);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-bottom: 12px;
+        }
+
+        /* Футер */
+        footer.page-footer {
+            background-color: #0f172a;
+            padding-top: 20px;
+        }
+    </style>
 </head>
+
 <body>
-    <nav class="nav-shell">
+
+    <!-- Шапка сайта -->
+    <nav>
         <div class="nav-wrapper container">
-            <a href="{% url 'events:home' %}" class="brand-logo brand-mark">EventHub</a>
+            <a href="{% url 'events:home' %}" class="brand-logo">
+                <i class="material-icons left" style="color: #f59e0b;">event</i>EventHub
+            </a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
-           
-        </div> 
+                <li><a href="{% url 'events:home' %}">Главная</a></li>
+                <li><a href="{% url 'events:event_list' %}">Все квесты</a></li>
+                <li>
+                    <a href="{% url 'events:event_create' %}" class="btn amber darken-2 waves-effect style="
+                        margin-left: 10px;">
+                        + Создать квест
+                    </a>
+                </li>
+            </ul>
+        </div>
     </nav>
+
+    <!-- Основной контент -->
     <main>
-        {% block content %}{% endblock %}
+        {% block content %}
+        {% endblock %}
     </main>
+
+    <!-- Подвал сайта -->
+    <footer class="page-footer">
+        <div class="footer-copyright">
+            <div class="container center-align">
+                © {% now "Y" %} EventHub — Платформа университетских мероприятий
+            </div>
+        </div>
+    </footer>
+
+    <!-- Materialize JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
+
 </html>
