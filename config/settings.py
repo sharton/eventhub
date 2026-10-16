@@ -129,5 +129,6 @@ MAILERS = {
     },
 }
 
+LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "events:event_list"
 LOGOUT_REDIRECT_URL = "events:home"
