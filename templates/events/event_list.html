@@ -8,10 +8,9 @@
         <div class="page-header">
             <span class="eyebrow">Event Catalog</span>
             <h1>Список событий</h1>
-            <p>Пока это демонстрационный список, а на следующих занятиях мы свяжем его с моделями и базой данных.</p>
+            <p>Каталог событий: открывайте карточки, редактируйте и удаляйте свои записи.</p>
         </div>
-   
-    
+
         <div class="row">
             {% for event in events %}
                 <div class="col s12 m6 l4">
@@ -22,7 +21,13 @@
                         <h2>{{ event.title }}</h2>
                         <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
                         <p>{{ event.summary }}</p>
-                        <a href="{{ event.get_absolute_url }}" class="feature-link">Открыть карточку</a>
+                        <a href="{% url 'events:event_detail' event.pk %}" class="feature-link">Открыть карточку</a>
+                        {% if user.is_authenticated %}
+                            <div class="card-actions">
+                                <a href="{% url 'events:event_update' event.pk %}" class="feature-link">Редактировать</a>
+                                <a href="{% url 'events:event_delete' event.pk %}" class="feature-link">Удалить</a>
+                            </div>
+                        {% endif %}
                     </article>
                 </div>
             {% empty %}

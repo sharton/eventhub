@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}EventHub | Удаление{% endblock %}
+
+{% block content %}
+<section class="page-shell">
+    <div class="container">
+        <div class="page-header">
+            <span class="eyebrow">Удаление</span>
+            <h1>Удалить событие?</h1>
+            <p>«{{ event.title }}» исчезнет из каталога, но останется в базе данных.</p>
+        </div>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn red">Да, удалить</button>
+            <a href="{% url 'events:event_detail' event.pk %}" class="btn-flat">Отмена</a>
+        </form>
+    </div>
+</section>
+{% endblock %}
