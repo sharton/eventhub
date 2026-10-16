@@ -22,6 +22,3 @@ class EventForm(forms.ModelForm):
             "starts_at",
             "is_published"
         ]
-        widgets = {
-            'slug': forms.TextInput(attrs={'placeholder': 'my-event-slug'}),
-        }

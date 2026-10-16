@@ -69,7 +69,11 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'config.wsgi.application'
+<<<<<<< HEAD
 LOGIN_URL = '/admin/login/'
+=======
+
+>>>>>>> dbf18ed12d19fc28141df157b68bed74edf33b35
 
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
