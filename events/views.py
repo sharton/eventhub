@@ -1,7 +1,8 @@
-from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, View
 from django.urls import reverse_lazy
 from .models import Event
 from .forms import EventForm
+from django.shortcuts import get_object_or_404, redirect 
 
 
 class HomeView(ListView):
@@ -48,3 +49,11 @@ class EventUpdateView(UpdateView):
     form_class = EventForm
     template_name = "events/event_form.html"
     extra_context = {"page_title": "Редактирование события"}
+
+
+class EventDeleteView(View):
+    def post(self, request, pk):
+        event = get_object_or_404(Event, pk=pk)
+        event.is_deleted = True
+        event.save()
+        return redirect('events:home')
