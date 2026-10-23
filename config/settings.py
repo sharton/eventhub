@@ -20,7 +20,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
+    'accounts',
     'events',
 ]
 
@@ -84,7 +84,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 
 # --- Аутентификация ---
-LOGIN_URL = 'login'
+LOGIN_URL = 'accounts:login'
 LOGIN_REDIRECT_URL = 'events:home'
 LOGOUT_REDIRECT_URL = 'events:home'
 

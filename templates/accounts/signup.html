@@ -9,7 +9,7 @@
             {{ form.as_p }}
             <button type="submit" class="btn-large amber darken-2">Создать аккаунт</button>
         </form>
-        <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+        <p>Уже есть аккаунт? <a href="{% url 'accounts:login' %}">Войти</a></p>
     </div>
 </section>
 {% endblock %}

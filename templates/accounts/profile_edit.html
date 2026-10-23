@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}EventHub | Редактирование профиля{% endblock %}
+
+{% block content %}
+<section class="page-shell">
+    <div class="container">
+        <div class="page-header">
+            <span class="eyebrow">Account</span>
+            <h1>Редактировать профиль</h1>
+        </div>
+
+        <form method="post" enctype="multipart/form-data" class="detail-card form-shell">
+            {% csrf_token %}
+
+            <h3>Данные пользователя</h3>
+            {% for field in user_form %}
+            <div class="form-row">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}<p class="form-error">{{ error }}</p>{% endfor %}
+            </div>
+            {% endfor %}
+            {% for error in user_form.non_field_errors %}<p class="form-error">{{ error }}</p>{% endfor %}
+
+            <h3>Профиль</h3>
+            {% for field in profile_form %}
+            <div class="form-row">
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% for error in field.errors %}<p class="form-error">{{ error }}</p>{% endfor %}
+            </div>
+            {% endfor %}
+            {% for error in profile_form.non_field_errors %}<p class="form-error">{{ error }}</p>{% endfor %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn-large amber darken-2">Сохранить</button>
+                <a href="{% url 'accounts:profile' %}" class="btn-flat">Отмена</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

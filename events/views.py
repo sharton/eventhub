@@ -1,12 +1,12 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.views.generic import (
-    TemplateView, ListView, DetailView, CreateView, UpdateView, View, FormView
+    TemplateView, ListView, DetailView, CreateView, UpdateView, View
 )
-from django.shortcuts import redirect, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.contrib import messages
 
-from .forms import EventForm, SignUpForm
+from .forms import EventForm
 from .models import Event
 
 
@@ -82,9 +82,7 @@ class EventDeleteView(LoginRequiredMixin, UserPassesTestMixin, View):
         return redirect("events:event_list")
 
     def get(self, request, pk):
-        # показать страницу подтверждения
         event = self.get_object()
-        from django.shortcuts import render
         return render(request, "events/event_confirm_delete.html", {"event": event})
 
 
@@ -95,14 +93,3 @@ class MyEventsView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Event.objects.alive().filter(owner=self.request.user)
-
-
-class SignUpView(FormView):
-    template_name = "registration/signup.html"
-    form_class = SignUpForm
-    success_url = reverse_lazy("login")
-
-    def form_valid(self, form):
-        form.save()
-        messages.success(self.request, "Аккаунт создан. Теперь войдите.")
-        return super().form_valid(form)

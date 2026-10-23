@@ -1,0 +1,115 @@
+{% extends "base.html" %}
+
+{% block title %}EventHub | Мой профиль{% endblock %}
+
+{% block content %}
+<div class="pr-wrap">
+    <div class="pr-container">
+
+        <div class="pr-head">
+            <span class="pr-eyebrow">Account</span>
+            <h1 class="pr-title">Мой профиль</h1>
+        </div>
+
+        <!-- Шапка профиля -->
+        <div class="pr-hero">
+            <div class="pr-avatar-box">
+                {% if profile.avatar %}
+                <img src="{{ profile.avatar.url }}" alt="Аватар {{ user.username }}" class="pr-avatar">
+                {% else %}
+                <div class="pr-avatar pr-avatar-empty">
+                    {{ user.username|first|upper }}
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="pr-hero-info">
+                <h2 class="pr-username">{{ user.username }}</h2>
+                <p class="pr-fullname">
+                    {% if user.first_name or user.last_name %}
+                    {{ user.first_name }} {{ user.last_name }}
+                    {% else %}
+                    Имя и фамилия не указаны
+                    {% endif %}
+                </p>
+                <p class="pr-email">
+                    <span class="pr-email-label">Email:</span>
+                    {{ user.email|default:"не указан" }}
+                </p>
+            </div>
+
+            <div class="pr-hero-action">
+                <a href="{% url 'accounts:profile_edit' %}" class="pr-btn pr-btn-primary">
+                    Редактировать профиль
+                </a>
+            </div>
+        </div>
+
+        <!-- Плитки с данными -->
+        <div class="pr-grid">
+            <div class="pr-tile">
+                <span class="pr-tile-label">Город</span>
+                <span class="pr-tile-value">{{ profile.city|default:"—" }}</span>
+            </div>
+            <div class="pr-tile">
+                <span class="pr-tile-label">Дата рождения</span>
+                <span class="pr-tile-value">{{ profile.birth_date|date:"d.m.Y"|default:"—" }}</span>
+            </div>
+            <div class="pr-tile">
+                <span class="pr-tile-label">Дата регистрации</span>
+                <span class="pr-tile-value">{{ user.date_joined|date:"d.m.Y" }}</span>
+            </div>
+        </div>
+
+        <!-- О себе -->
+        <div class="pr-bio">
+            <h3 class="pr-bio-title">О себе</h3>
+            {% if profile.bio %}
+            <p class="pr-bio-text">{{ profile.bio|linebreaksbr }}</p>
+            {% else %}
+            <p class="pr-bio-empty">
+                Пока ничего не рассказано.
+                <a href="{% url 'accounts:profile_edit' %}">Добавить</a>
+            </p>
+            {% endif %}
+        </div>
+
+        <!-- Мои события -->
+        <div class="pr-events">
+            <div class="pr-events-head">
+                <h3 class="pr-events-title">Мои события</h3>
+                <a href="{% url 'events:event_create' %}" class="pr-btn pr-btn-primary pr-btn-sm">+ Создать</a>
+            </div>
+
+            {% if user_events %}
+            <div class="pr-events-list">
+                {% for event in user_events %}
+                <div class="pr-event-card">
+                    {% if event.poster %}
+                    <div class="pr-event-img">
+                        <img src="{{ event.poster.url }}" alt="{{ event.title }}">
+                    </div>
+                    {% endif %}
+                    <div class="pr-event-body">
+                        <h4 class="pr-event-title">{{ event.title }}</h4>
+                        <p class="pr-event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
+                        <p class="pr-event-summary">{{ event.summary }}</p>
+                    </div>
+                    <div class="pr-event-foot">
+                        <a href="{% url 'events:event_detail' event.pk %}" class="pr-link">Открыть →</a>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="pr-empty">
+                <h4>У вас пока нет событий</h4>
+                <p>Создайте первое — оно появится здесь.</p>
+                <a href="{% url 'events:event_create' %}" class="pr-btn pr-btn-primary">Создать событие</a>
+            </div>
+            {% endif %}
+        </div>
+
+    </div>
+</div>
+{% endblock %}
