@@ -6,8 +6,8 @@ class EventForm(forms.ModelForm):
 
     starts_at = forms.DateTimeField(
         label="Дата и время",
-        widget=forms.DateTimeInput(attrs={"type": "datetime-local"}),
-        input_formats=["%d.%m.%YT%H:%M"],
+        widget=forms.DateTimeInput(format="%Y-%m-%dT%H:%M", attrs={"type": "datetime-local"}),
+        input_formats=["%Y-%m-%dT%H:%M", "%d.%m.%YT%H:%M"],
     )
 
 

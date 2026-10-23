@@ -8,7 +8,7 @@
         <div class="page-header">
             <span class="eyebrow">Event Catalog</span>
             <h1>Список событий</h1>
-            <p>Пока это демонстрационный список, а на следующих занятиях мы свяжем его с моделями и базой данных.</p>
+            <p>Выберите событие, чтобы посмотреть подробности.</p>
         </div>
    
     
@@ -24,7 +24,7 @@
                         <h2>{{ event.title }}</h2>
                         <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
                         <p>{{ event.summary }}</p>
-                        <a href="{{ event.get_absolute_url }}" class="feature-link">Открыть карточку</a>
+                        <a href="{% url 'events:event_detail' event.pk %}" class="feature-link">Открыть карточку</a>
                     </article>
                 </div>
             {% empty %}

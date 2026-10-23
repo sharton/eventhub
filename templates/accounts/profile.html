@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}EventHub | Мой профиль{% endblock %}
+{% block content %}
+<section class="page-shell"><div class="container">
+    <article class="detail-card">
+        <h1>Мой профиль</h1>
+        {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" alt="Аватар {{ user.username }}" class="profile-avatar">
+        {% else %}
+            <p class="profile-placeholder">Аватар не загружен</p>
+        {% endif %}
+        <dl>
+            <dt>Имя пользователя</dt><dd>{{ user.username }}</dd>
+            <dt>Имя</dt><dd>{{ user.first_name|default:"Не указано" }}</dd>
+            <dt>Фамилия</dt><dd>{{ user.last_name|default:"Не указана" }}</dd>
+            <dt>Email</dt><dd>{{ user.email|default:"Не указан" }}</dd>
+            <dt>Город</dt><dd>{{ profile.city|default:"Не указан" }}</dd>
+            <dt>Дата рождения</dt><dd>{{ profile.birth_date|date:"d.m.Y"|default:"Не указана" }}</dd>
+            <dt>О себе</dt><dd>{{ profile.bio|default:"Не заполнено"|linebreaksbr }}</dd>
+            <dt>Дата регистрации</dt><dd>{{ user.date_joined|date:"d.m.Y" }}</dd>
+        </dl>
+        <a href="{% url 'accounts:profile_edit' %}" class="btn amber darken-2">Редактировать профиль</a>
+        <h2>Мои события</h2>
+        <ul>
+            {% for event in events %}
+                <li><a href="{% url 'events:event_detail' event.pk %}">{{ event.title }}</a></li>
+            {% empty %}<li>У вас пока нет событий.</li>{% endfor %}
+        </ul>
+    </article>
+</div></section>
+{% endblock %}
