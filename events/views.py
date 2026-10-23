@@ -28,6 +28,10 @@ class EventCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = "events/event_form.html"
     success_message = "Событие «%(title)s» создано."
 
+    def form_valid(self, form):
+        form.instance.owner = self.request.user
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse("events:event_detail", kwargs={"pk": self.object.pk})
 

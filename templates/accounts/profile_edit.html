@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Редактирование профиля — EventHub{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h4>Редактирование профиля</h4>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <h6>Данные пользователя</h6>
+        {{ user_form.as_p }}
+
+        <h6>Профиль</h6>
+        {{ profile_form.as_p }}
+
+        <button type="submit" class="btn">Сохранить</button>
+        <a href="{% url 'profile' %}" class="btn grey">Отмена</a>
+    </form>
+</div>
+{% endblock %}

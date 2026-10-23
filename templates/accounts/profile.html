@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Мой профиль — EventHub{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h4>Мой профиль</h4>
+
+    {% if profile.avatar %}
+        <img src="{{ profile.avatar.url }}" alt="avatar" width="140" height="140"
+             style="object-fit:cover;border-radius:50%;">
+    {% else %}
+        <div style="width:140px;height:140px;border-radius:50%;background:#e0e0e0;
+                    display:flex;align-items:center;justify-content:center;">нет фото</div>
+    {% endif %}
+
+    <ul class="collection" style="margin-top:16px;">
+        <li class="collection-item"><b>Логин:</b> {{ user.username }}</li>
+        <li class="collection-item"><b>Имя:</b> {{ user.first_name }} {{ user.last_name }}</li>
+        <li class="collection-item"><b>Email:</b> {{ user.email }}</li>
+        <li class="collection-item"><b>Город:</b> {{ profile.city }}</li>
+        <li class="collection-item"><b>Дата рождения:</b> {{ profile.birth_date|default:"—" }}</li>
+        <li class="collection-item"><b>О себе:</b> {{ profile.bio }}</li>
+        <li class="collection-item"><b>Дата регистрации:</b> {{ user.date_joined|date:"d.m.Y" }}</li>
+    </ul>
+
+    <a href="{% url 'profile_edit' %}" class="btn">Редактировать профиль</a>
+
+    <h5 style="margin-top:24px;">Мои события</h5>
+    {% if events %}
+        <ul class="collection">
+            {% for event in events %}
+                <li class="collection-item">
+                    <a href="{% url 'events:event_detail' event.pk %}">{{ event.title }}</a>
+                    — {{ event.starts_at|date:"d.m.Y H:i" }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>У вас пока нет событий.</p>
+    {% endif %}
+</div>
+{% endblock %}
