@@ -19,14 +19,70 @@
     <nav class="nav-shell">
         <div class="nav-wrapper container">
             <a href="{% url 'events:home' %}" class="brand-logo brand-mark">EventHub</a>
-            <ul id="nav-mobile" class="right hide-on-med-and-down">
+            <a href="#" data-target="mobile-menu" class="sidenav-trigger right"><i class="material-icons">menu</i></a>
 
+            <ul id="nav-mobile" class="right hide-on-med-and-down nav-links">
+                <li><a href="{% url 'events:event_list' %}">События</a></li>
+
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'events:my_events' %}">Мои события</a></li>
+                <li><a href="{% url 'events:event_create' %}" class="btn-small amber darken-2 nav-cta">+ Создать</a>
+                </li>
+                <li>
+                    <form method="post" action="{% url 'logout' %}" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-flat white-text logout-btn">
+                            Выйти ({{ user.username }})
+                        </button>
+                    </form>
+                </li>
+                {% else %}
+                <li><a href="{% url 'login' %}">Войти</a></li>
+                <li><a href="{% url 'signup' %}" class="btn-small amber darken-2 nav-cta">Регистрация</a></li>
+                {% endif %}
+            </ul>
         </div>
     </nav>
+
+    <!-- мобильное меню -->
+    <ul class="sidenav" id="mobile-menu">
+        <li><a href="{% url 'events:event_list' %}">События</a></li>
+        {% if user.is_authenticated %}
+        <li><a href="{% url 'events:my_events' %}">Мои события</a></li>
+        <li><a href="{% url 'events:event_create' %}">Создать событие</a></li>
+        <li>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-flat logout-btn-mobile">Выйти ({{ user.username }})</button>
+            </form>
+        </li>
+        {% else %}
+        <li><a href="{% url 'login' %}">Войти</a></li>
+        <li><a href="{% url 'signup' %}">Регистрация</a></li>
+        {% endif %}
+    </ul>
+
     <main>
+        {% if messages %}
+        <div class="container messages-wrap">
+            {% for message in messages %}
+            <div
+                class="card-panel toast {% if message.tags == 'success' %}green lighten-4{% elif message.tags == 'error' %}red lighten-4{% else %}amber lighten-4{% endif %}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
         {% block content %}{% endblock %}
     </main>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            M.Sidenav.init(document.querySelectorAll('.sidenav'));
+        });
+    </script>
 </body>
 
 </html>

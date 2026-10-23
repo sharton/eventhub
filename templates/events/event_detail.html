@@ -9,12 +9,24 @@
             {% if event.poster %}
             <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="detail-poster">
             {% endif %}
-            <span class="chip amber lighten-4">{{ event.category.name }}</span>
+
             <h1>{{ event.title }}</h1>
-            <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
-            <p>{{ event.description }}</p>
+            <p class="event-meta">
+                <span class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</span>
+                <span class="dot">•</span>
+                <span>Автор: {{ event.owner.username|default:"—" }}</span>
+            </p>
+
+            <p class="event-description">{{ event.description }}</p>
+
             <div class="detail-actions">
                 <a href="{% url 'events:event_list' %}" class="feature-link">← Назад к событиям</a>
+                {% if user.is_authenticated and event.owner == user %}
+                <span class="spacer"></span>
+                <a href="{% url 'events:event_update' event.pk %}" class="btn-small waves-effect">Изменить</a>
+                <a href="{% url 'events:event_delete' event.pk %}"
+                    class="btn-small red lighten-1 waves-effect">Удалить</a>
+                {% endif %}
             </div>
         </article>
     </div>

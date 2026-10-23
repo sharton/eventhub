@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}EventHub | Регистрация{% endblock %}
+{% block content %}
+<section class="page-shell">
+    <div class="container">
+        <h1>Регистрация</h1>
+        <form method="post" class="detail-card form-shell">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-large amber darken-2">Создать аккаунт</button>
+        </form>
+        <p>Уже есть аккаунт? <a href="{% url 'login' %}">Войти</a></p>
+    </div>
+</section>
+{% endblock %}

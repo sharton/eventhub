@@ -1,32 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}EventHub | {{ page_title }}{% endblock %}
+{% block title %}EventHub | {{ page_title|default:"Событие" }}{% endblock %}
 
 {% block content %}
 <section class="page-shell">
     <div class="container">
         <div class="page-header">
             <span class="eyebrow">Forms & Validation</span>
-            <h1>{{ page_title }}</h1>
+            <h1>{{ page_title|default:"Событие" }}</h1>
         </div>
+
         <form method="post" enctype="multipart/form-data" class="detail-card form-shell">
             {% csrf_token %}
+
             {% for field in form %}
             <div class="form-row">
                 <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
-                {% if field.help_text %}
-                <small>{{ field.help_text }}</small>
-                {% endif %}
+                {% if field.help_text %}<small class="help">{{ field.help_text }}</small>{% endif %}
                 {% for error in field.errors %}
                 <p class="form-error">{{ error }}</p>
                 {% endfor %}
             </div>
             {% endfor %}
+
             {% for error in form.non_field_errors %}
             <p class="form-error">{{ error }}</p>
             {% endfor %}
-            <button type="submit" class="btn-large amber darken-2">Сохранить событие</button>
+
+            <div class="form-actions">
+                <button type="submit" class="btn-large amber darken-2">Сохранить</button>
+                <a href="{% url 'events:event_list' %}" class="btn-flat">Отмена</a>
+            </div>
         </form>
     </div>
 </section>

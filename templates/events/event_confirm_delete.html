@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}EventHub | Удалить событие{% endblock %}
+{% block content %}
+<section class="page-shell">
+    <div class="container">
+        <h1>Удалить «{{ event.title }}»?</h1>
+        <p>Событие будет скрыто из каталога (soft-delete).</p>
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-large red darken-2">Удалить</button>
+            <a href="{{ event.get_absolute_url }}">Отмена</a>
+        </form>
+    </div>
+</section>
+{% endblock %}

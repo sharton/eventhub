@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block title %}EventHub | Вход{% endblock %}
+{% block content %}
+<section class="page-shell">
+    <div class="container">
+        <h1>Вход</h1>
+        <form method="post" class="detail-card form-shell">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn-large amber darken-2">Войти</button>
+        </form>
+        <p>Нет аккаунта? <a href="{% url 'signup' %}">Зарегистрироваться</a></p>
+    </div>
+</section>
+{% endblock %}

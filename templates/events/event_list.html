@@ -7,31 +7,44 @@
     <div class="container">
         <div class="page-header">
             <span class="eyebrow">Event Catalog</span>
-            <h1>Список событий</h1>
-            <p>Пока это демонстрационный список, а на следующих занятиях мы свяжем его с моделями и базой данных.</p>
+            <h1>{% if request.resolver_match.url_name == 'my_events' %}Мои события{% else %}Список событий{% endif %}
+            </h1>
         </div>
-   
-    
+
         <div class="row">
             {% for event in events %}
-                <div class="col s12 m6 l4">
-                    <article class="event-card">
-                        {% if event.poster %}
-                            <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="event-poster">
-                        {% endif %}
-                        <h2>{{ event.title }}</h2>
+            <div class="col s12 m6 l4">
+                <article class="card event-card">
+                    {% if event.poster %}
+                    <div class="card-image">
+                        <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="event-poster">
+                    </div>
+                    {% endif %}
+                    <div class="card-content">
+                        <span class="card-title">{{ event.title }}</span>
                         <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
-                        <p>{{ event.summary }}</p>
-                        <a href="{{ event.get_absolute_url }}" class="feature-link">Открыть карточку</a>
-                    </article>
-                </div>
+                        <p class="event-summary">{{ event.summary }}</p>
+                    </div>
+                    <div class="card-action event-actions">
+                        <a href="{{ event.get_absolute_url }}" class="feature-link">Открыть</a>
+                        {% if user.is_authenticated and event.owner == user %}
+                        <a href="{% url 'events:event_update' event.pk %}" class="btn-small waves-effect">Изменить</a>
+                        <a href="{% url 'events:event_delete' event.pk %}"
+                            class="btn-small red lighten-1 waves-effect">Удалить</a>
+                        {% endif %}
+                    </div>
+                </article>
+            </div>
             {% empty %}
-                <div class="col s12">
-                    <article class="event-card">
-                        <h2>Каталог пока пуст</h2>
-                        <p>После добавления первых записей события появятся здесь автоматически.</p>
-                    </article>
+            <div class="col s12">
+                <div class="card-panel empty-state">
+                    <h5>Каталог пока пуст</h5>
+                    <p>Создайте первое событие — оно появится здесь.</p>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'events:event_create' %}" class="btn amber darken-2">Создать событие</a>
+                    {% endif %}
                 </div>
+            </div>
             {% endfor %}
         </div>
     </div>
