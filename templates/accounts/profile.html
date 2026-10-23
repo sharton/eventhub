@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}EventHub | Мой профиль{% endblock %}
+
+{% block content %}
+<section class="page-shell">
+    <div class="container">
+        <div class="page-header">
+            <h1>Мой профиль</h1>
+        </div>
+
+        <div class="row">
+            <div class="col s12 m4">
+                <article class="detail-card">
+                    {% if profile.avatar %}
+                        <img src="{{ profile.avatar.url }}" alt="Аватар" class="detail-poster">
+                    {% else %}
+                        <p>Аватар не загружен</p>
+                    {% endif %}
+                </article>
+            </div>
+            <div class="col s12 m8">
+                <article class="detail-card">
+                    <h2>{{ user.username }}</h2>
+                    <p><strong>Имя:</strong> {{ user.first_name|default:"не указано" }}</p>
+                    <p><strong>Фамилия:</strong> {{ user.last_name|default:"не указана" }}</p>
+                    <p><strong>Email:</strong> {{ user.email|default:"не указан" }}</p>
+                    <p><strong>Город:</strong> {{ profile.city|default:"не указан" }}</p>
+                    <p><strong>Дата рождения:</strong> {{ profile.birth_date|date:"d E Y"|default:"не указана" }}</p>
+                    <p><strong>О себе:</strong> {{ profile.bio|default:"не указано" }}</p>
+                    <p><strong>Дата регистрации:</strong> {{ user.date_joined|date:"d E Y" }}</p>
+                    <a href="{% url 'accounts:profile_edit' %}" class="btn amber darken-2">Редактировать профиль</a>
+                </article>
+            </div>
+        </div>
+
+        <h2>Мои события</h2>
+        <div class="row">
+            {% for event in events %}
+                <div class="col s12 m6 l4">
+                    <article class="event-card">
+                        <h2>{{ event.title }}</h2>
+                        <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
+                        <a href="{% url 'events:event_detail' event.pk %}" class="feature-link">Открыть карточку</a>
+                    </article>
+                </div>
+            {% empty %}
+                <div class="col s12">
+                    <p>У вас пока нет событий.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

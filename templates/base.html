@@ -17,7 +17,7 @@
             <a href="{% url 'events:home' %}" class="brand-logo brand-mark">EventHub</a>
             <ul id="nav-mobile" class="right hide-on-med-and-down">
                 {% if user.is_authenticated %}
-                    <li><a href="#!">{{ user.username }}</a></li>
+                    <li><a href="{% url 'accounts:profile' %}">{{ user.username }}</a></li>
                     <li>
                         <form method="post" action="{% url 'accounts:logout' %}" class="nav-form">
                             {% csrf_token %}
@@ -29,10 +29,16 @@
                     <li><a href="{% url 'accounts:signup' %}">Регистрация</a></li>
                 {% endif %}
             </ul>
-           
-        </div> 
+        </div>
     </nav>
     <main>
+        {% if messages %}
+            <div class="container">
+                {% for message in messages %}
+                    <p class="card-panel green lighten-4">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
