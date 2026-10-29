@@ -214,3 +214,14 @@ body {
         transform: none;
     }
 }
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.search-form input[type="search"] {
+    margin: 0;
+}
