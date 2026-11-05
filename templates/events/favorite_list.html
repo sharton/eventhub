@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block title %}EventHub | Избранное{% endblock %}
+
+{% block content %}
+<section class="page-shell">
+    <div class="container">
+        <div class="page-header">
+            <span class="eyebrow">Favorites</span>
+            <h1>Избранное</h1>
+            <p>События, которые вы отметили.</p>
+        </div>
+        <div class="row">
+            {% for event in events %}
+                <div class="col s12 m6 l4">
+                    <article class="event-card">
+                        {% if event.poster %}
+                            <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="event-poster">
+                        {% endif %}
+                        <h2>{{ event.title }}</h2>
+                        <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
+                        <p>{{ event.summary }}</p>
+                        <a href="{% url 'events:event_detail' event.pk %}" class="feature-link">Подробнее</a>
+                        <form method="post" action="{% url 'events:event_favorite' event.pk %}" style="display:inline;">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <button type="submit" class="btn red">Убрать</button>
+                        </form>
+                    </article>
+                </div>
+            {% empty %}
+                <div class="col s12">
+                    <article class="event-card">
+                        <h2>У вас пока нет избранных событий.</h2>
+                        <p><a href="{% url 'events:event_list' %}" class="feature-link">Все события</a></p>
+                    </article>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

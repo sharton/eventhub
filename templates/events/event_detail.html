@@ -20,6 +20,15 @@
             {% if user.is_authenticated %}
                 <a href="{% url 'events:event_update' event.pk %}" class="feature-link">Редактировать</a>
                 <a href="{% url 'events:event_delete' event.pk %}" class="feature-link">Удалить</a>
+                <form method="post" action="{% url 'events:event_favorite' event.pk %}" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="next" value="{{ request.path }}">
+                    {% if user in event.favorited_by.all %}
+                        <button type="submit" class="btn red">Убрать из избранного</button>
+                    {% else %}
+                        <button type="submit" class="btn">В избранное</button>
+                    {% endif %}
+                </form>
             {% endif %}
         </article>
     </div>

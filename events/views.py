@@ -1,8 +1,12 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse, reverse_lazy
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.http import require_POST
 from django.views.generic import CreateView, DeleteView, DetailView, ListView, TemplateView, UpdateView
 
 from .forms import EventForm
@@ -19,7 +23,7 @@ class EventListView(ListView):
     context_object_name = "events"
 
     def get_queryset(self):
-        return Event.objects.filter(is_deleted=False)
+        return Event.objects.filter(is_deleted=False).prefetch_related("favorited_by")
 
 
 class EventCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
@@ -71,3 +75,25 @@ class EventDetailView(DetailView):
 
     def get_queryset(self):
         return Event.objects.filter(is_deleted=False)
+
+
+@login_required
+@require_POST
+def toggle_favorite(request, pk):
+    event = get_object_or_404(Event, pk=pk, is_deleted=False)
+    if event.favorited_by.filter(pk=request.user.pk).exists():
+        event.favorited_by.remove(request.user)
+    else:
+        event.favorited_by.add(request.user)
+    next_url = request.POST.get("next")
+    if next_url and url_has_allowed_host_and_scheme(next_url, allowed_hosts={request.get_host()}):
+        return redirect(next_url)
+    return redirect("events:event_list")
+
+
+class FavoriteListView(LoginRequiredMixin, ListView):
+    template_name = "events/favorite_list.html"
+    context_object_name = "events"
+
+    def get_queryset(self):
+        return self.request.user.favorite_events.filter(is_deleted=False)

@@ -7,10 +7,13 @@ from django.contrib.auth import get_user_model
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
+from django.utils import timezone
 from django.contrib.messages import get_messages
 from PIL import Image
 
 from .models import Event
+
+User = get_user_model()
 
 
 class EventCrudTests(TestCase):
@@ -262,3 +265,22 @@ class EventAccessTests(TestCase):
             response, reverse("events:event_delete", kwargs={"pk": self.event.pk})
         )
 
+
+
+class FavoriteTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user("fav_user", password="pass12345")
+        self.event = Event.objects.create(
+            title="T", slug="t", summary="s", description="d", starts_at=timezone.now()
+        )
+
+    def test_favorite_requires_login(self):
+        resp = self.client.post(reverse("events:event_favorite", args=[self.event.pk]))
+        self.assertEqual(resp.status_code, 302)
+
+    def test_toggle_add_and_remove(self):
+        self.client.login(username="fav_user", password="pass12345")
+        self.client.post(reverse("events:event_favorite", args=[self.event.pk]))
+        self.assertTrue(self.event.favorited_by.filter(pk=self.user.pk).exists())
+        self.client.post(reverse("events:event_favorite", args=[self.event.pk]))
+        self.assertFalse(self.event.favorited_by.filter(pk=self.user.pk).exists())
