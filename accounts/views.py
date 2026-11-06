@@ -28,6 +28,7 @@ class ProfileView(LoginRequiredMixin, TemplateView):
         profile, _ = Profile.objects.get_or_create(user=user)
         context["profile"] = profile
         context["events"] = user.events.filter(is_deleted=False)
+        context["favorites"] = user.favorite_events.filter(is_deleted=False)
         return context
 
 

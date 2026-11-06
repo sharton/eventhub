@@ -50,6 +50,29 @@
                 </div>
             {% endfor %}
         </div>
+
+        <h2>Избранное</h2>
+        <div class="row">
+            {% for event in favorites %}
+                <div class="col s12 m6 l4">
+                    <article class="event-card">
+                        <h2>{{ event.title }}</h2>
+                        <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
+                        <p>{{ event.summary }}</p>
+                        <a href="{% url 'events:event_detail' event.pk %}" class="feature-link">Открыть карточку</a>
+                        <form method="post" action="{% url 'events:event_favorite' event.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{% url 'accounts:profile' %}">
+                            <button type="submit" class="btn-flat" title="Убрать из избранного">♥ Убрать из избранного</button>
+                        </form>
+                    </article>
+                </div>
+            {% empty %}
+                <div class="col s12">
+                    <p>В избранном пока пусто. Отметьте события сердечком в списке событий.</p>
+                </div>
+            {% endfor %}
+        </div>
     </div>
 </section>
 {% endblock %}
