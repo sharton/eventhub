@@ -36,7 +36,18 @@
                         <h2>{{ event.title }}</h2>
                         <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
                         <p>{{ event.summary }}</p>
-                        <a href="{{ event.get_absolute_url }}" class="feature-link">Открыть карточку</a>
+                        <a href="{% url 'events:event_detail' event.pk %}" class="feature-link">Открыть карточку</a>
+                        {% if user.is_authenticated %}
+                            <form method="post" action="{% url 'events:event_favorite' event.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                                {% if event.pk in favorite_ids %}
+                                    <button type="submit" class="btn-flat" title="Убрать из избранного">♥ В избранном</button>
+                                {% else %}
+                                    <button type="submit" class="btn-flat" title="Добавить в избранное">♡ В избранное</button>
+                                {% endif %}
+                            </form>
+                        {% endif %}
                     </article>
                 </div>
             {% empty %}

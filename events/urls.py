@@ -9,6 +9,6 @@ urlpatterns = [
     path('events/<int:pk>', views.EventDetailView.as_view(), name="event_detail"),
     path('events/create/', views.EventCreateView.as_view(), name="event_create"),
     path('events/update/<int:pk>', views.EventUpdateView.as_view(), name="event_update"),
+    path('events/favorite/<int:pk>', views.EventFavoriteToggleView.as_view(), name="event_favorite"),
 
 ]
-
