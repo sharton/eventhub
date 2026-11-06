@@ -10,7 +10,19 @@
             <h1>Список событий</h1>
             <p>Пока это демонстрационный список, а на следующих занятиях мы свяжем его с моделями и базой данных.</p>
         </div>
-   
+        
+        <form method="get" action="{% url 'events:event_list' %}" class="search-form">
+            <input type="search" name="q" value="{{ query }}" placeholder="Поиск по событиям">
+            <button type="submit" class="btn amber darken-2">Найти</button>
+            {% if query %}
+                <a href="{% url 'events:event_list' %}" class="feature-link">Сбросить</a>
+            {% endif %}
+        </form>
+
+        {% if query %}
+            <p>Результаты по запросу «{{ query }}»: {{ events|length }}</p>
+        {% endif %}
+
     
         <div class="row">
             {% for event in events %}
