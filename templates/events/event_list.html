@@ -6,15 +6,28 @@
 <section class="page-shell">
     <div class="container">
         <div class="page-header">
-            <span class="eyebrow">Event Catalog</span>
             <h1>Список событий</h1>
             <p>Каталог событий: открывайте карточки, редактируйте и удаляйте свои записи.</p>
         </div>
+
+        <form method="get" action="{% url 'events:event_list' %}" class="search-form">
+            <input type="search" name="q" value="{{ query }}" placeholder="Поиск по событиям">
+            <button type="submit" class="btn amber darken-2">Найти</button>
+            {% if query %}
+                <a href="{% url 'events:event_list' %}" class="feature-link">Сбросить</a>
+            {% endif %}
+        </form>
+
+        {% if query %}
+            <p>Результаты по запросу «{{ query }}»: {{ events|length }}</p>
+        {% endif %}
 
         <div class="row">
             {% for event in events %}
                 <div class="col s12 m6 l4">
                     <article class="event-card">
+                        <p>{{event.pk}}</p>
+                        <p>{{event.owner}}</p>
                         {% if event.poster %}
                             <img src="{{ event.poster.url }}" alt="{{ event.title }}" class="event-poster">
                         {% endif %}
@@ -22,7 +35,7 @@
                         <p class="event-date">{{ event.starts_at|date:"d E Y, H:i" }}</p>
                         <p>{{ event.summary }}</p>
                         <a href="{% url 'events:event_detail' event.pk %}" class="feature-link">Открыть карточку</a>
-                        {% if user.is_authenticated %}
+                        {% if user == event.owner %}
                             <div class="card-actions">
                                 <a href="{% url 'events:event_update' event.pk %}" class="feature-link">Редактировать</a>
                                 <a href="{% url 'events:event_delete' event.pk %}" class="feature-link">Удалить</a>

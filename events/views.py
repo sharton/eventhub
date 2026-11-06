@@ -1,4 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import HttpResponseRedirect
 from django.urls import reverse_lazy
 from django.views.generic import (
@@ -14,6 +15,13 @@ from .forms import EventForm
 from .models import Event
 
 
+class OwnerRequiredMixin(UserPassesTestMixin):
+    """Доступ только владельцу события."""
+
+    def test_func(self):
+        return self.get_object().owner == self.request.user
+
+
 class HomeView(TemplateView):
     template_name = "events/home.html"
 
@@ -24,7 +32,20 @@ class EventListView(ListView):
     context_object_name = "events"
 
     def get_queryset(self):
-        return Event.objects.filter(is_deleted=False)
+        queryset = Event.objects.filter(is_deleted=False)
+        query = self.request.GET.get("q", "").strip()
+        if query:
+            queryset = queryset.filter(
+                Q(title__icontains=query)
+                | Q(summary__icontains=query)
+                | Q(description__icontains=query)
+            )
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["query"] = self.request.GET.get("q", "").strip()
+        return context
 
 
 class EventDetailView(DetailView):
@@ -48,7 +69,7 @@ class EventCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class EventUpdateView(LoginRequiredMixin, UpdateView):
+class EventUpdateView(LoginRequiredMixin, OwnerRequiredMixin, UpdateView):
     model = Event
     form_class = EventForm
     template_name = "events/event_form.html"
@@ -59,7 +80,7 @@ class EventUpdateView(LoginRequiredMixin, UpdateView):
         return Event.objects.filter(is_deleted=False)
 
 
-class EventDeleteView(LoginRequiredMixin, DeleteView):
+class EventDeleteView(LoginRequiredMixin, OwnerRequiredMixin, DeleteView):
     model = Event
     template_name = "events/event_confirm_delete.html"
     context_object_name = "event"
