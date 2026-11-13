@@ -17,7 +17,7 @@ class Event(models.Model):
         blank=True,
     )
     title = models.CharField(max_length=200)
-    slug = models.SlugField(max_length=220, unique=True)
+    slug = models.SlugField(max_length=220, unique=True, allow_unicode=True)
     summary = models.CharField(max_length=240)
     description = models.TextField()
     poster = models.ImageField(upload_to="events/posters/", blank=True)
@@ -41,3 +41,25 @@ class Event(models.Model):
     def soft_delete(self):
         self.is_deleted = True
         self.save(update_fields=['is_deleted'])
+
+
+
+class Favorite(models.Model):
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="favorites",
+    )
+    event = models.ForeignKey(
+        Event,
+        on_delete=models.CASCADE,
+        related_name="favorited_by",
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("user", "event")
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"{self.user.username} ♥ {self.event.title}"

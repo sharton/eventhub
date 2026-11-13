@@ -7,9 +7,31 @@
     <div class="container">
         <div class="page-header">
             <span class="eyebrow">Event Catalog</span>
-            <h1>{% if request.resolver_match.url_name == 'my_events' %}Мои события{% else %}Список событий{% endif %}
+            <h1>
+                {% if request.resolver_match.url_name == 'my_events' %}
+                Мои события
+                {% elif request.resolver_match.url_name == 'favorites' %}
+                Избранное
+                {% else %}
+                Список событий
+                {% endif %}
             </h1>
         </div>
+
+        <form method="get" class="search-form">
+            <div class="search-row">
+                <input type="text" name="q" value="{{ q|default:'' }}"
+                    placeholder="Поиск по названию (можно часть слова)…" class="search-input">
+                <button type="submit" class="btn amber darken-2 search-btn">Найти</button>
+                {% if q %}
+                <a href="{% if request.resolver_match.url_name == 'my_events' %}{% url 'events:my_events' %}{% elif request.resolver_match.url_name == 'favorites' %}{% url 'events:favorites' %}{% else %}{% url 'events:event_list' %}{% endif %}"
+                    class="btn-flat search-reset">Сбросить</a>
+                {% endif %}
+            </div>
+            {% if q %}
+            <p class="search-hint">Результаты по запросу «{{ q }}»: {{ events|length }}</p>
+            {% endif %}
+        </form>
 
         <div class="row">
             {% for event in events %}
@@ -27,6 +49,18 @@
                     </div>
                     <div class="card-action event-actions">
                         <a href="{{ event.get_absolute_url }}" class="feature-link">Открыть</a>
+
+                        {% if user.is_authenticated %}
+                        <form method="post" action="{% url 'events:toggle_favorite' event.pk %}" class="fav-form">
+                            {% csrf_token %}
+                            {% if event.pk in user_favorite_ids %}
+                            <button type="submit" class="fav-btn fav-btn-active" title="Убрать из избранного">♥</button>
+                            {% else %}
+                            <button type="submit" class="fav-btn" title="В избранное">♡</button>
+                            {% endif %}
+                        </form>
+                        {% endif %}
+
                         {% if user.is_authenticated and event.owner == user %}
                         <a href="{% url 'events:event_update' event.pk %}" class="btn-small waves-effect">Изменить</a>
                         <a href="{% url 'events:event_delete' event.pk %}"
@@ -38,10 +72,19 @@
             {% empty %}
             <div class="col s12">
                 <div class="card-panel empty-state">
+                    {% if q %}
+                    <h5>Ничего не найдено</h5>
+                    <p>По запросу «{{ q }}» событий нет.</p>
+                    {% elif request.resolver_match.url_name == 'favorites' %}
+                    <h5>В избранном пока пусто</h5>
+                    <p>Нажмите ♡ на карточке события, чтобы добавить его сюда.</p>
+                    <a href="{% url 'events:event_list' %}" class="btn amber darken-2">К списку событий</a>
+                    {% else %}
                     <h5>Каталог пока пуст</h5>
                     <p>Создайте первое событие — оно появится здесь.</p>
                     {% if user.is_authenticated %}
                     <a href="{% url 'events:event_create' %}" class="btn amber darken-2">Создать событие</a>
+                    {% endif %}
                     {% endif %}
                 </div>
             </div>

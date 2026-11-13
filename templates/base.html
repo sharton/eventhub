@@ -26,6 +26,7 @@
 
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'events:my_events' %}">Мои события</a></li>
+                <li><a href="{% url 'events:favorites' %}">Избранное</a></li>
                 <li><a href="{% url 'events:event_create' %}" class="btn-small amber darken-2 nav-cta">+ Создать</a>
                 </li>
                 <li><a href="{% url 'accounts:profile' %}" class="nav-profile">Профиль ({{ user.username }})</a></li>
@@ -66,8 +67,11 @@
         {% if messages %}
         <div class="container messages-wrap">
             {% for message in messages %}
-            <div
-                class="card-panel toast {% if message.tags == 'success' %}green lighten-4{% elif message.tags == 'error' %}red lighten-4{% else %}amber lighten-4{% endif %}">
+            <div class="card-panel white-text
+                {% if message.tags == 'success' %}green darken-4
+                {% elif message.tags == 'error' %}red darken-4
+                {% elif message.tags == '   warning' %}amber darken-4
+                {% else %}blue-grey darken-4{% endif %}">
                 {{ message }}
             </div>
             {% endfor %}

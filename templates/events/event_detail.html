@@ -21,6 +21,22 @@
 
             <div class="detail-actions">
                 <a href="{% url 'events:event_list' %}" class="feature-link">← Назад к событиям</a>
+
+                {% if user.is_authenticated %}
+                <form method="post" action="{% url 'events:toggle_favorite' event.pk %}" class="fav-form">
+                    {% csrf_token %}
+                    {% if event.pk in user_favorite_ids %}
+                    <button type="submit" class="fav-btn fav-btn-active" title="Убрать из избранного">
+                        ♥ В избранном
+                    </button>
+                    {% else %}
+                    <button type="submit" class="fav-btn" title="В избранное">
+                        ♡ В избранное
+                    </button>
+                    {% endif %}
+                </form>
+                {% endif %}
+
                 {% if user.is_authenticated and event.owner == user %}
                 <span class="spacer"></span>
                 <a href="{% url 'events:event_update' event.pk %}" class="btn-small waves-effect">Изменить</a>
