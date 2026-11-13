@@ -15,6 +15,9 @@
             <p>{{ event.description }}</p>
             <div class="detail-actions">
                 <a href="{% url 'events:event_list' %}" class="feature-link">← Назад к событиям</a>
+                {% if user.is_authenticated and event.owner == user %}
+                    <a href="{% url 'events:event_delete' event.pk %}" class="feature-link">Удалить</a>
+                {% endif %}
             </div>
         </article>
     </div>
